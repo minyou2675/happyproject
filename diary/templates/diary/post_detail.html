@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+{% load crispy_forms_tags %}
+<body>
+    <h1>{{post.title}}</h1>
+    {% if post.head_image %}
+    <img src="{{post.head_image.url}}" />
+    {% endif %}
+    <p>{{post.author}}|{{post.createat}} {{post.updateat}}
+    {% if post.tag.exists%}
+    {% for tag in post.tag.iterator%}
+    <p>태그 {{tag}}</p>
+    {% endfor %}
+    {% endif %}
+    {% if post.category %}
+    <p>카테고리 분류 : {{post.category}}</p>
+    {% endif %}
+   
+    <p>{{post.content}}</p>
+
+    <h1>한줄평</h1>
+    <form method="POST" action="{{ post.get_absolute_url}}add_comment/"> {% csrf_token %}
+        <div class="form-group">
+         {{comment_form | crispy}}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button> <!-- action -> 어디로 정보를 보낼 지 정의 -->
+      </form>
+      {% if post.comment_set.exists %}
+      {% for comment in post.comment_set.iterator %}
+      <p>{{comment}}</p>
+      
+      {% endfor %}
+      {% endif %}
+    <button><a href="/yuneediary/update_diary/{{post.pk}}">수정하기</a></button>
+    <button><a href="/yuneediary/">목록으로</a></button>
+</body>
+</html>

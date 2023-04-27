@@ -1,0 +1,13 @@
+<html>
+
+{% load crispy_forms_tags %}
+
+<form method="POST" enctype="multipart/form-data"> {% csrf_token %}
+    <table>
+        {{form | crispy}}
+    </table>
+    <button type="submit" value="post_diary">글쓰기</button>
+    
+</form>
+<button><a href="/yuneediary/">목록으로</a></button>
+</html>
